@@ -94,7 +94,7 @@ int main(int argc, char** argv)
       read_number = atoi(line); 
 
 
-      read_number = (read_number >> (page_size / (8 * page_count))) & mask;
+      read_number = (read_number >> (page_size / (8 * page_count))) & 0b1111111111111111111;
 
       int found = isInQueue(queue, read_number);
 

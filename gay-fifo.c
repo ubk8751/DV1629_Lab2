@@ -50,14 +50,14 @@ int main(int argc, char** argv)
       }
       if(found == 0){
         page_faults++;
-        table[(read_lines % page_count)] = final_addr;
+        table[(page_faults % page_count)] = final_addr;
       }
   }
   fclose(fp);
   if (line)
       free(line);
 
-  printf("Read %d memory references => %d pagefaults\n", read_lines, page_faults);
+  printf("Read %d memory references => %d pagefaults\n\n", read_lines, page_faults);
 
   return 0;
 }
