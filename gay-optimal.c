@@ -1,3 +1,4 @@
+// Check https://www.thecrazyprogrammer.com/2016/11/optimal-page-replacement-algorithm-c.html
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -93,11 +94,14 @@ int main(int argc, char** argv)
                     }
                 }
             }
-            printf("Step #%d: Replacing page #%d (%d) due to next use on step %d (%lu)\n", i, latest_use_index, table[latest_use_index].addr, latest_use, mem_addrs[latest_use]);  
-
+            /*
+            for(int k = 0; k < page_count; k++){
+              printf("%d next use: %d\n", table[k].addr, table[k].next_use);
+            }*/
+            printf("Step #%d: Replacing page #%d (%d) due to next use on step %d (%lu)\n", i, latest_use_index, table[latest_use_index].addr, latest_use, mem_addrs[latest_use]);
+            printf("\n");
             table[latest_use_index].addr = final_addr;
             page_faults++;
-
         }
     }
   }
