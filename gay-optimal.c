@@ -74,6 +74,9 @@ int main(int argc, char** argv)
             page_faults++;
             size++;
         } else {
+            for(int k = 0; k < page_count; k++)
+                table[k].next_use = i;
+
             for(int k = 0; k < page_count; k++){
                 for(int j = i+1; j < MEMORY_TRACE_LENGTH; j++){
                     if(table[k].addr == mem_addrs[j]){
@@ -82,9 +85,9 @@ int main(int argc, char** argv)
                     }
                 }
             }
-            int latest_use = 0, latest_use_index = 0;
+            int latest_use = 0, latest_use_index = -1;
             for(int k = 0; k < page_count; k++){
-                if(table[k].next_use == 0){
+                if(table[k].next_use == i){
                     latest_use_index = k;
                     break;
                 } else {
@@ -94,10 +97,10 @@ int main(int argc, char** argv)
                     }
                 }
             }
-            /*
+            
             for(int k = 0; k < page_count; k++){
-              printf("%d next use: %d\n", table[k].addr, table[k].next_use);
-            }*/
+              printf("%d: %d (%d) next use: %d\n", k, table[k].addr, table[k].next_use - i, table[k].next_use);
+            }
             printf("Step #%d: Replacing page #%d (%d) due to next use on step %d (%lu)\n", i, latest_use_index, table[latest_use_index].addr, latest_use, mem_addrs[latest_use]);
             printf("\n");
             table[latest_use_index].addr = final_addr;
