@@ -38,6 +38,7 @@ int main(int argc, char** argv)
       read_lines++;
       read_number = atoi(line);
 
+      // Calculate the address of the page in memory
       temp = (int)(read_number/page_size);
       final_addr = temp*page_size;
 

@@ -34,10 +34,10 @@ int main(int argc, char** argv)
     long read_number;
     int final_addr;
 
-    printf("Allocating very chonky array... ");
     long mem_addrs[MEMORY_TRACE_LENGTH];
-    printf("Allocated.\n");
     int read_lines, i = 0;
+    
+    // Read in all addresses from file into one big array in memory
     while ((read = getline(&line, &len, fp)) != -1) {
         read_lines++;
         read_number = atoi(line);
@@ -47,16 +47,17 @@ int main(int argc, char** argv)
         i++;
     }
 
+    fclose(fp);
+    if (line)
+        free(line);
+
     optimal_data* table = malloc(sizeof(optimal_data) * page_count);
     for(i = 0; i < page_count; i++){
         table[i].addr = -1;
         table[i].next_use = 0;
     }
 
-    fclose(fp);
-    if (line)
-        free(line);
-
+    // For each page
     int page_faults = 0, size = 0;
     for(int i = 0; i < MEMORY_TRACE_LENGTH; i++) {
         final_addr = mem_addrs[i];

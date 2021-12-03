@@ -61,13 +61,17 @@ int main(int argc, char** argv)
     if(found == 0){
       int value = INT_MAX, final_idx = -1;
       lru_data* data;
+
+      // Loop through all pages and find the one which was least recently used
       for(int idx = 0; idx < page_count; idx++){
         data = table + idx;
-          if(data->last_used < value){
-            value = data->last_used;
-            final_idx = idx;
+        if(data->last_used < value){
+          value = data->last_used;
+          final_idx = idx;
       }
     }
+
+    // Increment page faults and replace page
     page_faults++;
     table[final_idx].addr = final_addr;
     table[final_idx].last_used = read_lines;
