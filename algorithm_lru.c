@@ -18,7 +18,6 @@ int main(int argc, char** argv)
   char* file_name = argv[3];
   printf("No of physical pages = %d, page size = %d\nReading memory trace from %s\n", page_count, page_size, file_name);
 
-  // hippedy hoppedy this code is now our property
   FILE * fp;
   char * line = NULL;
   size_t len = 0;
@@ -27,6 +26,7 @@ int main(int argc, char** argv)
   int read_lines = 0;
   int page_faults = 0;
 
+  // Allocate data for the table
   lru_data *table;
   table = malloc(page_count * sizeof(lru_data));
   for(int i =0; i < page_count; i++){
@@ -47,23 +47,26 @@ int main(int argc, char** argv)
     temp = (int)(read_number/page_size);
     final_addr = temp*page_size;
 
+    // Look for the page in the table
     int found = 0;
     for (int i = 0; i < page_count; i++) {
-        if (table[i].addr == final_addr) {
-            table[i].last_used = read_lines;
-            found = 1;
-            break;
-        }
+      if (table[i].addr == final_addr) {
+        table[i].last_used = read_lines;
+        found = 1;
+        break;
+      }
     }
+    // If the page is in the table
+    // Find the page which has been used least recently and replace it
     if(found == 0){
-    int value = INT_MAX, final_idx = -1;
-    lru_data* data;
-    for(int idx = 0; idx < page_count; idx++){
+      int value = INT_MAX, final_idx = -1;
+      lru_data* data;
+      for(int idx = 0; idx < page_count; idx++){
         data = table + idx;
-            if(data->last_used < value){
-                value = data->last_used;
-                final_idx = idx;
-        }
+          if(data->last_used < value){
+            value = data->last_used;
+            final_idx = idx;
+      }
     }
     page_faults++;
     table[final_idx].addr = final_addr;

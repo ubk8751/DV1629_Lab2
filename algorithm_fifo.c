@@ -13,7 +13,6 @@ int main(int argc, char** argv)
   char* file_name = argv[3];
   printf("No of physical pages = %d, page size = %d\nReading memory trace from %s\n", page_count, page_size, file_name);
 
-  // hippedy hoppedy this code is now our property
   FILE * fp;
   char * line = NULL;
   size_t len = 0;
@@ -42,12 +41,16 @@ int main(int argc, char** argv)
       temp = (int)(read_number/page_size);
       final_addr = temp*page_size;
 
+      // Look if page is in table
       int found = 0;
       for (int i = 0; i < page_count; i++) {
         if (table[(i)] == final_addr) {
           found = 1;
         }
       }
+      // If page is in table, remove the first element and insert the new one
+      // This is equivalent to simply replacing the first one with the new one and incrementing the index
+      // Here we use page_faults as the index itself
       if(found == 0){
         page_faults++;
         table[(page_faults % page_count)] = final_addr;
